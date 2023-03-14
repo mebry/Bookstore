@@ -10,8 +10,6 @@ namespace Bookstore.Domain.Entities
 
         public string Description { get; set; } = string.Empty;
 
-        public int AuthorId { get; set; }
-
         public double Price { get; set; }
 
         public string ImageURL { get; set; } = string.Empty;
