@@ -1,6 +1,6 @@
 ﻿namespace Bookstore.Domain.Entities
 {
-    public class AuthorBook
+    public class AuthorBookDto
     {
         public int BookId { get; set; }
 

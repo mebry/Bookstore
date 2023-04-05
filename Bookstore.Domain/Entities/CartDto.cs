@@ -1,6 +1,6 @@
 ﻿namespace Bookstore.Domain.Entities
 {
-    public class Cart
+    public class CartDto
     {
         public int Id { get; set; }
 

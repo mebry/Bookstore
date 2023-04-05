@@ -1,6 +1,6 @@
 ﻿namespace Bookstore.Domain.Entities
 {
-    public class Genre
+    public class GenreDto
     {
         public int Id { get; set; }
 
