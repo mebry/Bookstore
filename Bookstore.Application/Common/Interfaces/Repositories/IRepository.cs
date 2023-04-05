@@ -2,16 +2,14 @@
 {
     public interface IRepository<T>
     {
-        void Create(T entity);
+        Task<T> CreateAsync(T entity);
 
-        void Update(T entity);
+        Task UpdateAsync(T entity);
 
-        void Delete(int id);
+        Task DeleteAsync(int id);
 
         Task<T?> GetByIdAsync(int id);
 
         Task<IEnumerable<T?>> GetAllAsync();
-
-        Task SaveChangesAsync();
     }
 }
