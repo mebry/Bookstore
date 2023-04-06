@@ -8,7 +8,7 @@ namespace Bookstore.Persistence.Profiles
     {
         public CartProfile()
         {
-            CreateMap<Domain.Entities.Cart, Models.Cart>()
+            CreateMap<Domain.Entities.CartDto, Models.Cart>()
              .ReverseMap();
         }
     }

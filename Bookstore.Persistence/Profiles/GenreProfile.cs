@@ -8,7 +8,7 @@ namespace Bookstore.Persistence.Profiles
     {
         public GenreProfile()
         {
-            CreateMap<Domain.Entities.Genre, Models.Genre>()
+            CreateMap<Domain.Entities.GenreDto, Models.Genre>()
              .ReverseMap();
         }
     }

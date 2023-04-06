@@ -8,7 +8,7 @@ namespace Bookstore.Persistence.Profiles
     {
         public AuthorProfile()
         {
-            CreateMap<Domain.Entities.AuthorBook, Models.AuthorBook>()
+            CreateMap<Domain.Entities.AuthorBookDto, Models.AuthorBook>()
              .ReverseMap();
         }
     }
