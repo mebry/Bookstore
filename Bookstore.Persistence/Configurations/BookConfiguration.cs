@@ -18,6 +18,8 @@ namespace Bookstore.Persistence.Configurations
                 .IsRequired();
 
             builder.ToTable(t => t.HasCheckConstraint("Price", "Price > 0"));
+
+            builder.HasQueryFilter(p => !p.IsDeleted);
         }
     }
 }

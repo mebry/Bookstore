@@ -14,7 +14,9 @@ namespace Bookstore.Persistence.Configurations
 
             builder.Property(p => p.LastName)
                 .HasMaxLength(200)
-                .IsRequired();
+            .IsRequired();
+
+            builder.HasQueryFilter(p => !p.IsDeleted);
         }
     }
 }

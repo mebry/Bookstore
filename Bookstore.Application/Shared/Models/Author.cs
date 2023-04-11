@@ -10,6 +10,8 @@
 
         public string ProfilePictureURL { get; set; } = string.Empty;
 
+        public bool IsDeleted { get; set; }
+
         public List<AuthorBook> AuthorBooks { get; set; } = new();
     }
 }

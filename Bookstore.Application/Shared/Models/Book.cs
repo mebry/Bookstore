@@ -14,6 +14,8 @@
 
         public DateTime CreatedAt { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public int GenreId { get; set; }
 
         public Genre? Genre { get; set; }
