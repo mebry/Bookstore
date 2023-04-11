@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Bookstore.Persistence.Models;
-using System.Reflection.Emit;
+using Bookstore.Application.Shared.Models;
 
 namespace Bookstore.Persistence.Configurations
 {

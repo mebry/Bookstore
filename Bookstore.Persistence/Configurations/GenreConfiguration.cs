@@ -1,4 +1,4 @@
-﻿using Bookstore.Persistence.Models;
+﻿using Bookstore.Application.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
