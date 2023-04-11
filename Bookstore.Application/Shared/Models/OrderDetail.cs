@@ -1,6 +1,4 @@
-﻿using Bookstore.Application.Shared.Models;
-
-namespace Bookstore.Persistence.Models
+﻿namespace Bookstore.Application.Shared.Models
 {
     public class OrderDetail
     {

@@ -1,6 +1,6 @@
 ﻿using Bookstore.Application.Shared.Identity;
 
-namespace Bookstore.Persistence.Models
+namespace Bookstore.Application.Shared.Models
 {
     public class Order
     {
