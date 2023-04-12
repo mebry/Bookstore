@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Bookstore.Persistence.Configurations
+namespace Bookstore.Infrastructure.Persistance.Configurations
 {
     public class GenreConfiguration : IEntityTypeConfiguration<Genre>
     {
@@ -16,7 +16,7 @@ namespace Bookstore.Persistence.Configurations
             builder.Property(p => p.Name).HasMaxLength(100);
 
             builder.HasMany(p => p.Books)
-                .WithOne(p=>p.Genre)
+                .WithOne(p => p.Genre)
                 .HasForeignKey(u => u.GenreId);
         }
     }

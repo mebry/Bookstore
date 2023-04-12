@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Bookstore.Application.Shared.Models;
 
-namespace Bookstore.Persistence.Configurations
+namespace Bookstore.Infrastructure.Persistance.Configurations
 {
     public class CartDetailConfiguration : IEntityTypeConfiguration<CartDetail>
     {
@@ -13,9 +13,9 @@ namespace Bookstore.Persistence.Configurations
                 .HasForeignKey(p => p.CartId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(p=>p.Book)
-                .WithMany(p=>p.CartDetails)
-                .HasForeignKey(p=>p.BookId)
+            builder.HasOne(p => p.Book)
+                .WithMany(p => p.CartDetails)
+                .HasForeignKey(p => p.BookId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

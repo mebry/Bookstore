@@ -1,14 +1,13 @@
-﻿using Bookstore.Persistence.Configurations;
-using Bookstore.Persistence.Identity;
-using Bookstore.Persistence.Models;
+﻿using Bookstore.Application.Common.Interfaces.Context;
+using Bookstore.Application.Shared.Identity;
+using Bookstore.Application.Shared.Models;
+using Bookstore.Infrastructure.Persistance.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
 
-namespace Bookstore.Persistence.DataContext
+namespace Bookstore.Infrastructure.Persistance.DataContext
 {
-    public class BookstoreDbContext : IdentityDbContext<ApplicationUser>
+    public class BookstoreDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
         public BookstoreDbContext(DbContextOptions<BookstoreDbContext> options) : base(options)
         {
@@ -39,11 +38,16 @@ namespace Bookstore.Persistence.DataContext
             modelBuilder.ApplyConfiguration(new CartDetailConfiguration());
             modelBuilder.ApplyConfiguration(new AuthorBookConfiguration());
             modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
-            
+
             base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.LogTo(Console.WriteLine);
+
+        public async Task SaveChangesAsync()
+        {
+            await base.SaveChangesAsync();
+        }
     }
 }

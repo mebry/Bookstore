@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Bookstore.Domain;
-using Bookstore.Persistence.Models;
+using Bookstore.Application.Shared.Models;
+using Bookstore.Domain.Entities;
 
 namespace Bookstore.Persistence.Profiles
 {
@@ -8,7 +8,7 @@ namespace Bookstore.Persistence.Profiles
     {
         public GenreProfile()
         {
-            CreateMap<Domain.Entities.GenreDto, Models.Genre>()
+            CreateMap<GenreDto, Genre>()
              .ReverseMap();
         }
     }

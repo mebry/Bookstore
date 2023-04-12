@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Bookstore.Application.Shared.Models;
 using Bookstore.Domain;
-using Bookstore.Persistence.Models;
 
 namespace Bookstore.Persistence.Profiles
 {
@@ -8,7 +8,7 @@ namespace Bookstore.Persistence.Profiles
     {
         public OrderProfile()
         {
-            CreateMap<Domain.Entities.OrderDto, Models.Order>()
+            CreateMap<Domain.Entities.OrderDto, Order>()
              .ReverseMap();
         }
     }

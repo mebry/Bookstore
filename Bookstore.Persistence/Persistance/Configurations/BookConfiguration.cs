@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Bookstore.Application.Shared.Models;
 
-namespace Bookstore.Persistence.Configurations
+namespace Bookstore.Infrastructure.Persistance.Configurations
 {
     public class BookConfiguration : IEntityTypeConfiguration<Book>
     {
