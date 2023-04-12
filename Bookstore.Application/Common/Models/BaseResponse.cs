@@ -1,11 +1,10 @@
-﻿using Bookstore.Application.Common.Interfaces.Responses;
-using Bookstore.Domain.Enums;
+﻿using Bookstore.Domain.Enums;
 
 namespace Bookstore.Application.Common.Models
 {
-    public class BaseResponse<T> : IBaseResponse<T> where T : class
+    public class BaseResponse<T>
     {
-        public T Data { get; set; } = null!;
+        public T Data { get; set; }
 
         public StatusCode StatusCode { get; set; }
 
