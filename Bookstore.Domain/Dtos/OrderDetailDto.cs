@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Bookstore.Domain.Entities
+namespace Bookstore.Domain.Dtos
 {
     public class OrderDetailDto
     {

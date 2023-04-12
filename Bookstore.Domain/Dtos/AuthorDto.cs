@@ -1,4 +1,4 @@
-﻿namespace Bookstore.Domain.Entities
+﻿namespace Bookstore.Domain.Dtos
 {
     public class AuthorDto
     {

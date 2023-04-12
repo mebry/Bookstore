@@ -1,6 +1,4 @@
-﻿using Bookstore.Domain.Enums;
-
-namespace Bookstore.Domain.Entities
+﻿namespace Bookstore.Domain.Dtos
 {
     public class BookDto
     {
