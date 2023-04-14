@@ -3,12 +3,12 @@ using Bookstore.Application.Common.Exceptions;
 using Bookstore.Application.Common.Interfaces.Context;
 using Bookstore.Application.Common.Interfaces.Repositories;
 using Bookstore.Application.Shared.Models;
-using Bookstore.Domain.Entities;
+using Bookstore.Domain.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bookstore.Persistence.Repositories
 {
-    public class AuthorRepository : IAuthorReposotiry
+    public class AuthorRepository : IAuthorRepository
     {
         public readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -88,7 +88,9 @@ namespace Bookstore.Persistence.Repositories
 
         public async Task<bool> SetSoftDeleteAsync(int id)
         {
-            var foundEntity = await _context.Authors.FirstOrDefaultAsync(x => x.Id == id);
+            var foundEntity = await _context.Authors
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (foundEntity is null)
             {
@@ -104,7 +106,9 @@ namespace Bookstore.Persistence.Repositories
 
         public async Task<AuthorDto> UpdateAsync(AuthorDto entity)
         {
-            var foundEntity = await _context.Authors.FirstOrDefaultAsync(x => x.Id == entity.Id);
+            var foundEntity = await _context.Authors
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == entity.Id);
 
             if (foundEntity is null)
             {
@@ -115,6 +119,7 @@ namespace Bookstore.Persistence.Repositories
 
             _context.Authors.Update(foundEntity);
 
+            await _context.SaveChangesAsync();
             var mappedEntity = _mapper.Map<AuthorDto>(foundEntity);
 
             return mappedEntity;

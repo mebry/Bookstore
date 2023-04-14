@@ -1,5 +1,5 @@
 ﻿using Bookstore.Application.Common.Interfaces.Repositories;
-using Bookstore.Persistence.Identity;
+using Bookstore.Application.Shared.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
