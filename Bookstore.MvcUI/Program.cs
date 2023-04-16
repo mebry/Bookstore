@@ -1,3 +1,4 @@
+using Bookstore.Application.Common.Interfaces.Context;
 using Bookstore.Application.Configurations;
 using Bookstore.Infrastructure.Configurations;
 using Bookstore.MvcUI.Extensions;
@@ -13,6 +14,14 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddMvcUIServices();
 
 var app = builder.Build();
+
+//creates a new service scope where you can get instances of services registered in the dependency container
+using (var scope = app.Services.CreateScope())
+{
+    var dbContextInitializer = scope.ServiceProvider.GetRequiredService<IDbContextInitializer>();
+
+    await dbContextInitializer.InitialiseAsync();
+}
 
 if (!app.Environment.IsDevelopment())
 {

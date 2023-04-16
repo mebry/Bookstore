@@ -23,10 +23,10 @@ namespace Bookstore.Infrastructure.Configurations
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<BookstoreDbContext>());
 
-            services.AddScoped<BookstoreDbContextInitialiser>();
+            services.AddScoped<IDbContextInitializer, BookstoreDbContextInitializer>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
+            
             services.AddScoped<IAuthorRepository, AuthorRepository>()
                 .AddScoped<IBookRepository, BookRepository>();
 
