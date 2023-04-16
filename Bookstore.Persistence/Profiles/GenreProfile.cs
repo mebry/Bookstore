@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Bookstore.Application.Shared.Models;
-using Bookstore.Domain.Entities;
+using Bookstore.Domain.Dtos;
 
 namespace Bookstore.Persistence.Profiles
 {

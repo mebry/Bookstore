@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Bookstore.Application.Common.Exceptions;
 using Bookstore.Application.Common.Interfaces.Context;
 using Bookstore.Application.Common.Interfaces.Repositories;
 using Bookstore.Application.Shared.Models;
+using Bookstore.Domain.DisplayModels;
 using Bookstore.Domain.Dtos;
 using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
+using System.Security.Policy;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Bookstore.Persistence.Repositories
 {
@@ -49,8 +54,28 @@ namespace Bookstore.Persistence.Repositories
 
             return mappedList;
         }
+        /// <summary>
+        /// AsNoTrackingWithIdentityResolution -as a rule, faster 
+        ///a normal query, but slower than the same query with AsNoTrack ing. 
+        ///The improvement is that relationships with database objects are represented correctly, 
+        ///instances of entity classes with the same primary key are 
+        ///represented by one object that corresponds to one row in the database.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<BookPreview>> GetBookPreviewsAsync()
+        {
+            var books = await _context.Books
+                .AsNoTrackingWithIdentityResolution()
+                .Include(b => b.AuthorBooks)
+                    .ThenInclude(ab => ab.Author)
+                .Include(b => b.Genre)
+                .ProjectTo<BookPreview>(_mapper.ConfigurationProvider)
+                .ToListAsync();
 
-        public async Task<IEnumerable<BookDto>> GetBooksByGenre(List<int> genresId)
+            return books;
+        }
+
+        public async Task<IEnumerable<BookDto>> GetBooksByGenreAsync(List<int> genresId)
         {
             var dataList = await _context.Books
                 .AsNoTracking()
@@ -85,7 +110,7 @@ namespace Bookstore.Persistence.Repositories
             return mappedList;
         }
 
-        public async Task<IEnumerable<BookDto>> SearchByName(string name)
+        public async Task<IEnumerable<BookDto>> SearchByNameAsync(string name)
         {
             var dataList = await _context.Books
                 .AsNoTracking()

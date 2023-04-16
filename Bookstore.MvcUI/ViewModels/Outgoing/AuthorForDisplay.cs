@@ -13,6 +13,9 @@ namespace Bookstore.MvcUI.Models.Outgoing
         [Display(Name = "Surname")]
         public string LastName { get; set; } = string.Empty;
 
+        [Display(Name = "Biography")]
+        public string Bio { get; set; } = string.Empty;
+
         [Display(Name = "Image url")]
         public string ProfilePictureURL { get; set; } = string.Empty;
     }

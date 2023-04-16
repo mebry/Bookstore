@@ -1,14 +1,14 @@
 ﻿using Bookstore.Application.Common.Models;
-using Bookstore.Domain.Entities;
+using Bookstore.Domain.Dtos;
 
 namespace Bookstore.Application.Common.Interfaces.Services
 {
     public interface IAuthorService:IBaseService<AuthorDto>
     {
-        Task<BaseResponse<bool>> SetSoftDeleteAsync(int id);
+        Task<Response<bool>> SetSoftDeleteAsync(int id);
 
-        Task<BaseResponse<IEnumerable<AuthorDto>>> GetSoftDeletedAuthorsAsync();
+        Task<Response<IEnumerable<AuthorDto>>> GetSoftDeletedAuthorsAsync();
 
-        Task<BaseResponse<IEnumerable<AuthorDto>>> SearchByLastNameAsync(string authorName);
+        Task<Response<IEnumerable<AuthorDto>>> SearchByLastNameAsync(string authorName);
     }
 }

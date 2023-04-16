@@ -43,7 +43,10 @@ namespace Bookstore.Infrastructure.Persistance.DataContext
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.LogTo(Console.WriteLine);
+        {
+            optionsBuilder.LogTo(Console.WriteLine);
+            base.OnConfiguring(optionsBuilder);
+        }
 
         public async Task SaveChangesAsync()
         {

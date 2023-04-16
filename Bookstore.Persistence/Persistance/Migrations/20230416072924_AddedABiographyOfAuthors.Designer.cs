@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Bookstore.Persistence.Migrations
+namespace Bookstore.Infrastructure.Migrations
 {
     [DbContext(typeof(BookstoreDbContext))]
-    [Migration("20230315020600_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230416072924_AddedABiographyOfAuthors")]
+    partial class AddedABiographyOfAuthors
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Bookstore.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Bookstore.Persistence.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -98,7 +98,7 @@ namespace Bookstore.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Author", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Author", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,9 +106,16 @@ namespace Bookstore.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -123,7 +130,7 @@ namespace Bookstore.Persistence.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.AuthorBook", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.AuthorBook", b =>
                 {
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
@@ -138,7 +145,7 @@ namespace Bookstore.Persistence.Migrations
                     b.ToTable("AuthorsBooks");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Book", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,6 +167,9 @@ namespace Bookstore.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -177,7 +187,7 @@ namespace Bookstore.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Cart", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Cart", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -201,7 +211,7 @@ namespace Bookstore.Persistence.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.CartDetail", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.CartDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -230,7 +240,7 @@ namespace Bookstore.Persistence.Migrations
                     b.ToTable("CartDetails");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Genre", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Genre", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,7 +260,7 @@ namespace Bookstore.Persistence.Migrations
                     b.ToTable("Genres");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Order", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -272,7 +282,7 @@ namespace Bookstore.Persistence.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.OrderDetail", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.OrderDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -437,15 +447,15 @@ namespace Bookstore.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.AuthorBook", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.AuthorBook", b =>
                 {
-                    b.HasOne("Bookstore.Persistence.Models.Author", "Author")
+                    b.HasOne("Bookstore.Application.Shared.Models.Author", "Author")
                         .WithMany("AuthorBooks")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Bookstore.Persistence.Models.Book", "Book")
+                    b.HasOne("Bookstore.Application.Shared.Models.Book", "Book")
                         .WithMany("AuthorBooks")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -456,9 +466,9 @@ namespace Bookstore.Persistence.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Book", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Book", b =>
                 {
-                    b.HasOne("Bookstore.Persistence.Models.Genre", "Genre")
+                    b.HasOne("Bookstore.Application.Shared.Models.Genre", "Genre")
                         .WithMany("Books")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -467,24 +477,24 @@ namespace Bookstore.Persistence.Migrations
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Cart", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Cart", b =>
                 {
-                    b.HasOne("Bookstore.Persistence.Identity.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Bookstore.Application.Shared.Identity.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.CartDetail", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.CartDetail", b =>
                 {
-                    b.HasOne("Bookstore.Persistence.Models.Book", "Book")
+                    b.HasOne("Bookstore.Application.Shared.Models.Book", "Book")
                         .WithMany("CartDetails")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Bookstore.Persistence.Models.Cart", "Cart")
+                    b.HasOne("Bookstore.Application.Shared.Models.Cart", "Cart")
                         .WithMany("CartDetails")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -495,9 +505,9 @@ namespace Bookstore.Persistence.Migrations
                     b.Navigation("Cart");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Order", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Order", b =>
                 {
-                    b.HasOne("Bookstore.Persistence.Identity.ApplicationUser", "User")
+                    b.HasOne("Bookstore.Application.Shared.Identity.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -506,15 +516,15 @@ namespace Bookstore.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.OrderDetail", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.OrderDetail", b =>
                 {
-                    b.HasOne("Bookstore.Persistence.Models.Book", "Book")
+                    b.HasOne("Bookstore.Application.Shared.Models.Book", "Book")
                         .WithMany("OrderDetails")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Bookstore.Persistence.Models.Order", "Order")
+                    b.HasOne("Bookstore.Application.Shared.Models.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -536,7 +546,7 @@ namespace Bookstore.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Bookstore.Persistence.Identity.ApplicationUser", null)
+                    b.HasOne("Bookstore.Application.Shared.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -545,7 +555,7 @@ namespace Bookstore.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Bookstore.Persistence.Identity.ApplicationUser", null)
+                    b.HasOne("Bookstore.Application.Shared.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -560,7 +570,7 @@ namespace Bookstore.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bookstore.Persistence.Identity.ApplicationUser", null)
+                    b.HasOne("Bookstore.Application.Shared.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -569,19 +579,19 @@ namespace Bookstore.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Bookstore.Persistence.Identity.ApplicationUser", null)
+                    b.HasOne("Bookstore.Application.Shared.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Author", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Author", b =>
                 {
                     b.Navigation("AuthorBooks");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Book", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Book", b =>
                 {
                     b.Navigation("AuthorBooks");
 
@@ -590,17 +600,17 @@ namespace Bookstore.Persistence.Migrations
                     b.Navigation("OrderDetails");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Cart", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Cart", b =>
                 {
                     b.Navigation("CartDetails");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Genre", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Genre", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Bookstore.Persistence.Models.Order", b =>
+            modelBuilder.Entity("Bookstore.Application.Shared.Models.Order", b =>
                 {
                     b.Navigation("OrderDetails");
                 });

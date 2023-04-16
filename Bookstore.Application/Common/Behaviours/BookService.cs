@@ -2,24 +2,25 @@
 using Bookstore.Application.Common.Interfaces.Repositories;
 using Bookstore.Application.Common.Interfaces.Services;
 using Bookstore.Application.Common.Models;
+using Bookstore.Domain.DisplayModels;
 using Bookstore.Domain.Dtos;
 using Bookstore.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bookstore.Application.Common.Behaviours
 {
-    public class AuthorService : IAuthorService
+    public class BookService : IBookService
     {
-        private readonly IAuthorRepository _authorReposotiry;
+        private readonly IBookRepository _bookRepository;
 
-        public AuthorService(IAuthorRepository authorReposotiry)
+        public BookService(IBookRepository bookRepository)
         {
-            _authorReposotiry = authorReposotiry;
+            _bookRepository = bookRepository;
         }
 
-        public async Task<Response<AuthorDto>> CreateAsync(AuthorDto model)
+        public async Task<Response<BookDto>> CreateAsync(BookDto model)
         {
-            var response = new Response<AuthorDto>();
+            var response = new Response<BookDto>();
 
             try
             {
@@ -32,10 +33,10 @@ namespace Bookstore.Application.Common.Behaviours
                     return response;
                 }
 
-                var author = await _authorReposotiry.CreateAsync(model);
+                var book = await _bookRepository.CreateAsync(model);
 
-                response.Data = author;
-                response.Description = "The author was created";
+                response.Data = book;
+                response.Description = "The book was created";
                 response.StatusCode = StatusCode.OK;
 
                 return response;
@@ -64,10 +65,10 @@ namespace Bookstore.Application.Common.Behaviours
                     return response;
                 }
 
-                await _authorReposotiry.DeleteAsync(id);
+                await _bookRepository.DeleteAsync(id);
 
                 response.Data = true;
-                response.Description = "The author was removed";
+                response.Description = "The book was removed";
                 response.StatusCode = StatusCode.OK;
 
                 return response;
@@ -90,15 +91,15 @@ namespace Bookstore.Application.Common.Behaviours
             }
         }
 
-        public async Task<Response<IEnumerable<AuthorDto>>> GetAllAsync()
+        public async Task<Response<IEnumerable<BookDto>>> GetAllAsync()
         {
-            var response = new Response<IEnumerable<AuthorDto>>();
+            var response = new Response<IEnumerable<BookDto>>();
             try
             {
-                var authors = await _authorReposotiry.GetAllAsync();
+                var books = await _bookRepository.GetAllAsync();
 
-                response.Data = authors;
-                response.Description = "The author was received successfully";
+                response.Data = books;
+                response.Description = "The book was received successfully";
                 response.StatusCode = StatusCode.OK;
 
                 return response;
@@ -113,9 +114,32 @@ namespace Bookstore.Application.Common.Behaviours
             }
         }
 
-        public async Task<Response<AuthorDto>> GetByIdAsync(int id)
+        public async Task<Response<IEnumerable<BookPreview>>> GetBookPreviewsAsync()
         {
-            var response = new Response<AuthorDto>();
+            var response = new Response<IEnumerable<BookPreview>>();
+            try
+            {
+                var books = await _bookRepository.GetBookPreviewsAsync();
+
+                response.Data = books;
+                response.Description = "The book was received successfully";
+                response.StatusCode = StatusCode.OK;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.InternalServerError;
+
+                return response;
+            }
+        }
+
+        public async Task<Response<BookDto>> GetByIdAsync(int id)
+        {
+            var response = new Response<BookDto>();
             try
             {
                 if (id < 0)
@@ -127,10 +151,10 @@ namespace Bookstore.Application.Common.Behaviours
                     return response;
                 }
 
-                var entity = await _authorReposotiry.GetByIdAsync(id);
+                var entity = await _bookRepository.GetByIdAsync(id);
 
                 response.Data = entity;
-                response.Description = "The author was received";
+                response.Description = "The book was received";
                 response.StatusCode = StatusCode.OK;
 
                 return response;
@@ -153,15 +177,15 @@ namespace Bookstore.Application.Common.Behaviours
             }
         }
 
-        public async Task<Response<IEnumerable<AuthorDto>>> GetSoftDeletedAuthorsAsync()
+        public async Task<Response<IEnumerable<BookDto>>> GetSoftDeletedBooksAsync()
         {
-            var response = new Response<IEnumerable<AuthorDto>>();
+            var response = new Response<IEnumerable<BookDto>>();
             try
             {
-                var authors = await _authorReposotiry.GetSoftDeletedAuthorsAsync();
+                var authors = await _bookRepository.GetSoftDeletedBooksAsync();
 
                 response.Data = authors;
-                response.Description = "The soft removed authors have been received";
+                response.Description = "The soft removed books have been received";
                 response.StatusCode = StatusCode.OK;
 
                 return response;
@@ -176,12 +200,12 @@ namespace Bookstore.Application.Common.Behaviours
             }
         }
 
-        public async Task<Response<IEnumerable<AuthorDto>>> SearchByLastNameAsync(string authorName)
+        public async Task<Response<IEnumerable<BookDto>>> SearchByNameAsync(string name)
         {
-            var response = new Response<IEnumerable<AuthorDto>>();
+            var response = new Response<IEnumerable<BookDto>>();
             try
             {
-                if (string.IsNullOrWhiteSpace(authorName))
+                if (string.IsNullOrWhiteSpace(name))
                 {
                     response.Data = null;
                     response.Description = "The name can't be null or empty";
@@ -190,10 +214,10 @@ namespace Bookstore.Application.Common.Behaviours
                     return response;
                 }
 
-                var authors = await _authorReposotiry.SearchByLastNameAsync(authorName);
+                var books = await _bookRepository.SearchByNameAsync(name);
 
-                response.Data = authors;
-                response.Description = "The author was received successfully";
+                response.Data = books;
+                response.Description = "The book was received successfully";
                 response.StatusCode = StatusCode.OK;
 
                 return response;
@@ -223,7 +247,7 @@ namespace Bookstore.Application.Common.Behaviours
                     return response;
                 }
 
-                bool softStatus = await _authorReposotiry.SetSoftDeleteAsync(id);
+                bool softStatus = await _bookRepository.SetSoftDeleteAsync(id);
 
                 response.Data = softStatus;
                 response.Description = "Soft deleted property was changed";
@@ -249,9 +273,9 @@ namespace Bookstore.Application.Common.Behaviours
             }
         }
 
-        public async Task<Response<AuthorDto>> UpdateAsync(AuthorDto model)
+        public async Task<Response<BookDto>> UpdateAsync(BookDto model)
         {
-            var response = new Response<AuthorDto>();
+            var response = new Response<BookDto>();
             try
             {
                 if (model is null)
@@ -263,10 +287,10 @@ namespace Bookstore.Application.Common.Behaviours
                     return response;
                 }
 
-                var entity = await _authorReposotiry.UpdateAsync(model);
+                var entity = await _bookRepository.UpdateAsync(model);
 
                 response.Data = entity;
-                response.Description = "The author was updated";
+                response.Description = "The book was updated";
                 response.StatusCode = StatusCode.OK;
 
                 return response;

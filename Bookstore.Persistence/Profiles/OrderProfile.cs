@@ -8,7 +8,7 @@ namespace Bookstore.Persistence.Profiles
     {
         public OrderProfile()
         {
-            CreateMap<Domain.Entities.OrderDto, Order>()
+            CreateMap<Domain.Dtos.OrderDto, Order>()
              .ReverseMap();
         }
     }

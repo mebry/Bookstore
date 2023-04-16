@@ -1,14 +1,14 @@
 ﻿using Bookstore.Application.Common.Models;
-using Bookstore.Domain.Entities;
+using Bookstore.Domain.Dtos;
 
 namespace Bookstore.Application.Common.Interfaces.Services
 {
     public interface IBaseService<T>
     {
-        Task<BaseResponse<AuthorDto>> CreateAsync(T model);
-        Task<BaseResponse<AuthorDto>> UpdateAsync(T model);
-        Task<BaseResponse<bool>> DeleteAsync(int id);
-        Task<BaseResponse<T>> GetByIdAsync(int id);
-        Task<BaseResponse<IEnumerable<T>>> GetAllAsync();
+        Task<Response<T>> CreateAsync(T model);
+        Task<Response<T>> UpdateAsync(T model);
+        Task<Response<bool>> DeleteAsync(int id);
+        Task<Response<T>> GetByIdAsync(int id);
+        Task<Response<IEnumerable<T>>> GetAllAsync();
     }
 }

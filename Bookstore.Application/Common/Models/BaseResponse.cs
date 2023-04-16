@@ -2,7 +2,7 @@
 
 namespace Bookstore.Application.Common.Models
 {
-    public class BaseResponse<T>
+    public class Response<T>
     {
         public T Data { get; set; }
 

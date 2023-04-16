@@ -2,7 +2,7 @@
 
 namespace Bookstore.Application.Shared.Identity
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser: IdentityUser
     {
         public string FirstName { get; set; } = string.Empty;
 

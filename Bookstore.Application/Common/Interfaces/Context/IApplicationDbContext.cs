@@ -1,6 +1,5 @@
 ﻿using Bookstore.Application.Shared.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace Bookstore.Application.Common.Interfaces.Context
 {

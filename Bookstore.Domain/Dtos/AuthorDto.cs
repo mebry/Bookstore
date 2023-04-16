@@ -8,6 +8,8 @@
 
         public string LastName { get; set; } = string.Empty;
 
+        public string Bio { get; set; } = string.Empty;
+
         public string ProfilePictureURL { get; set; } = string.Empty;
     }
 }
