@@ -6,15 +6,13 @@
 
         public string Name { get; set; } = string.Empty;
 
-        public string Description { get; set; } = string.Empty;
-
         public double Price { get; set; }
 
         public string ImageURL { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; }
 
-        public int Genre { get; set; }
+        public string GenreName { get; set; } = string.Empty;
 
         public List<string> Authors { get; set; } = new();
     }

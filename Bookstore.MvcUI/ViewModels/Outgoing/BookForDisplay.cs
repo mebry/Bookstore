@@ -10,9 +10,6 @@ namespace Bookstore.MvcUI.ViewModels.Outgoing
         [Display(Name = "Name")]
         public string Name { get; set; } = string.Empty;
 
-        [Display(Name = "Description")]
-        public string Description { get; set; } = string.Empty;
-
         [Display(Name = "Price")]
         public double Price { get; set; }
 
@@ -23,7 +20,7 @@ namespace Bookstore.MvcUI.ViewModels.Outgoing
         public DateTime CreatedAt { get; set; }
 
         [Display(Name = "Genre")]
-        public int Genre{ get; set; }
+        public string GenreName{ get; set; } = string.Empty;
 
         [Display(Name = "Authors")]
         public IEnumerable<string> Authors { get; set; }

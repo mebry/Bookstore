@@ -13,8 +13,8 @@ namespace Bookstore.Persistence.Profiles
              .ReverseMap();
 
             CreateMap<Book, BookPreview>()
-            .ForMember(dest => dest.Genre, 
-                opt => opt.MapFrom(src => src.GenreId))
+            .ForMember(dest => dest.GenreName, 
+                opt => opt.MapFrom(src => src.Genre.Name))
              .ForMember(dest => dest.Authors, 
                 opt => opt.MapFrom(src => src.AuthorBooks.Select(ab => $"{ab.Author.FirstName} {ab.Author.LastName}")));
         }
