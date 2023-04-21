@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Bookstore.Application.Common.Interfaces.Repositories;
 using Bookstore.Persistence.Repositories;
+using Bookstore.Infrastructure.Repositories;
 
 namespace Bookstore.Infrastructure.Configurations
 {
@@ -28,7 +29,9 @@ namespace Bookstore.Infrastructure.Configurations
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             
             services.AddScoped<IAuthorRepository, AuthorRepository>()
-                .AddScoped<IBookRepository, BookRepository>();
+                .AddScoped<IBookRepository, BookRepository>()
+                .AddScoped<IAuthorBookRepository,AuthorBookRepository>()
+                .AddScoped<IGenreRepository,GenreRepository>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BookstoreDbContext>();
 

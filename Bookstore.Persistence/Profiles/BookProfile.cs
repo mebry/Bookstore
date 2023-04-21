@@ -17,6 +17,12 @@ namespace Bookstore.Persistence.Profiles
                 opt => opt.MapFrom(src => src.Genre.Name))
              .ForMember(dest => dest.Authors, 
                 opt => opt.MapFrom(src => src.AuthorBooks.Select(ab => $"{ab.Author.FirstName} {ab.Author.LastName}")));
+
+            CreateMap<Book, BookDetails>()
+            .ForMember(dest => dest.GenreName,
+                opt => opt.MapFrom(src => src.Genre.Name))
+             .ForMember(dest => dest.Authors,
+                opt => opt.MapFrom(src => src.AuthorBooks.Select(ab => ab.Author)));
         }
     }
 }
