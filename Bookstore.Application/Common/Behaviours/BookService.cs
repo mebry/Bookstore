@@ -1,4 +1,5 @@
-﻿using Bookstore.Application.Common.Exceptions;
+﻿using AutoMapper;
+using Bookstore.Application.Common.Exceptions;
 using Bookstore.Application.Common.Interfaces.Repositories;
 using Bookstore.Application.Common.Interfaces.Services;
 using Bookstore.Application.Common.Models;
@@ -12,10 +13,14 @@ namespace Bookstore.Application.Common.Behaviours
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
+        private readonly IAuthorBookService _authorBookService;
+        private readonly IMapper _mapper;
 
-        public BookService(IBookRepository bookRepository)
+        public BookService(IBookRepository bookRepository, IAuthorBookService authorBookService, IMapper mapper)
         {
             _bookRepository = bookRepository;
+            _authorBookService = authorBookService;
+            _mapper = mapper;
         }
 
         public async Task<Response<BookDto>> CreateAsync(BookDto model)
@@ -101,6 +106,46 @@ namespace Bookstore.Application.Common.Behaviours
                 response.Data = books;
                 response.Description = "The book was received successfully";
                 response.StatusCode = StatusCode.OK;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.InternalServerError;
+
+                return response;
+            }
+        }
+
+        public async Task<Response<BookDetails>> GetBookDetailsAsync(int id)
+        {
+            var response = new Response<BookDetails>();
+            try
+            {
+                if (id < 0)
+                {
+                    response.Data = null;
+                    response.Description = "This is an incorrect id format. Must be greater than 0";
+                    response.StatusCode = StatusCode.BadRequest;
+
+                    return response;
+                }
+
+                var entity = await _bookRepository.GetBookDetailsAsync(id);
+
+                response.Data = entity;
+                response.Description = "The book was received";
+                response.StatusCode = StatusCode.OK;
+
+                return response;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.NotFound;
 
                 return response;
             }
@@ -290,6 +335,190 @@ namespace Bookstore.Application.Common.Behaviours
                 var entity = await _bookRepository.UpdateAsync(model);
 
                 response.Data = entity;
+                response.Description = "The book was updated";
+                response.StatusCode = StatusCode.OK;
+
+                return response;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.NotFound;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.InternalServerError;
+
+                return response;
+            }
+        }
+
+        public async Task<Response<BookWithAuthors>> CreatBookWithAuthorsAsync(BookWithAuthors bookWithAuthors)
+        {
+            var response = new Response<BookWithAuthors>();
+            try
+            {
+                if (bookWithAuthors is null)
+                {
+                    response.Data = null;
+                    response.Description = "Model can't be null";
+                    response.StatusCode = StatusCode.BadRequest;
+
+                    return response;
+                }
+
+                var book = _mapper.Map<BookDto>(bookWithAuthors);
+
+                var createdBook = await _bookRepository.CreateAsync(book);
+
+                if (createdBook is null)
+                {
+                    response.Data = null;
+                    response.Description = "Can't create a book";
+                    response.StatusCode = StatusCode.BadRequest;
+
+                    return response;
+                }
+
+                var authorBookList = new List<AuthorBookDto>();
+                foreach (var authorId in bookWithAuthors.AuthorsId)
+                {
+                    authorBookList.Add(new AuthorBookDto()
+                    {
+                        AuthorId = authorId,
+                        BookId = createdBook.Id
+                    });
+                }
+
+                await _authorBookService.CreateRangeAsync(authorBookList);
+
+                response.Data = bookWithAuthors;
+                response.Description = "The book with authors was successfully created";
+                response.StatusCode = StatusCode.OK;
+
+                return response;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.NotFound;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.InternalServerError;
+
+                return response;
+            }
+
+        }
+
+        public async Task<Response<BookWithAuthors>> GetBookWithAuthors(int id)
+        {
+            var response = new Response<BookWithAuthors>();
+            try
+            {
+                if (id < 0)
+                {
+                    response.Data = null;
+                    response.Description = "This is an incorrect id format. Must be greater than 0";
+                    response.StatusCode = StatusCode.BadRequest;
+
+                    return response;
+                }
+
+                var book = await _bookRepository.GetByIdAsync(id);
+
+                var bookAuthors = await _authorBookService.GetByBookIdAsync(id);
+
+                var mappedBook = _mapper.Map<BookWithAuthors>(book);
+
+                if (bookAuthors.StatusCode != StatusCode.OK)
+                {
+                    response.Data = null;
+                    response.Description = bookAuthors.Description;
+                    response.StatusCode = bookAuthors.StatusCode;
+
+                    return response;
+                }
+
+                var listIds = new List<int>();
+
+                bookAuthors.Data.ToList().ForEach(i => listIds.Add(i.AuthorId));
+
+                mappedBook.AuthorsId = listIds;
+
+                response.Data=mappedBook;
+                response.Description = "Data was received";
+                response.StatusCode = StatusCode.OK;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.InternalServerError;
+
+                return response;
+            }
+        }
+
+        public async Task<Response<BookWithAuthors>> UpdateBookDetailsAsync(BookWithAuthors bookWithAuthors)
+        {
+            var response = new Response<BookWithAuthors>();
+            try
+            {
+                if (bookWithAuthors is null)
+                {
+                    response.Data = null;
+                    response.Description = "Model can't be null";
+                    response.StatusCode = StatusCode.BadRequest;
+
+                    return response;
+                }
+
+                var book = _mapper.Map<BookDto>(bookWithAuthors);
+
+
+                var updatedBook = await _bookRepository.UpdateAsync(book);
+
+                var result = await _authorBookService.GetByBookIdAsync(updatedBook.Id);
+
+                if (result.StatusCode != StatusCode.OK)
+                {
+                    response.Data = null;
+                    response.Description = result.Description;
+                    response.StatusCode = result.StatusCode;
+
+                    return response;
+                }
+
+                var bookAndAuthors = result.Data;
+
+                await _authorBookService.DeleteRangeAsync(bookAndAuthors);
+
+                var authorBookList = new List<AuthorBookDto>();
+                foreach (var authorId in bookWithAuthors.AuthorsId)
+                {
+                    authorBookList.Add(new AuthorBookDto()
+                    {
+                        AuthorId = authorId,
+                        BookId = updatedBook.Id
+                    });
+                }
+
+                await _authorBookService.CreateRangeAsync(authorBookList);
+
+                response.Data = bookWithAuthors;
                 response.Description = "The book was updated";
                 response.StatusCode = StatusCode.OK;
 
