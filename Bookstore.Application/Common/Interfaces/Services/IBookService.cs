@@ -13,5 +13,14 @@ namespace Bookstore.Application.Common.Interfaces.Services
         Task<Response<IEnumerable<BookDto>>> SearchByNameAsync(string name);
 
         Task<Response<IEnumerable<BookPreview>>> GetBookPreviewsAsync();
+
+        Task<Response<BookDetails>> GetBookDetailsAsync(int id);
+
+        Task<Response<BookWithAuthors>> UpdateBookDetailsAsync(BookWithAuthors bookWithAuthors);
+
+        Task<Response<BookWithAuthors>> CreatBookWithAuthorsAsync(BookWithAuthors bookWithAuthors);
+
+        Task<Response<BookWithAuthors>> GetBookWithAuthors(int id);
+
     }
 }

@@ -6,10 +6,14 @@ namespace Bookstore.Application.Common.Interfaces.Repositories
     {
         Task CreateAsync(AuthorBookDto entity);
 
-        Task UpdateAsync(AuthorBookDto entity);
-
         Task DeleteAsync(AuthorBookDto entity);
 
         Task<IEnumerable<AuthorBookDto>> GetAllAsync();
+
+        Task<IEnumerable<AuthorBookDto>> GetByBookIdAsync(int bookId);
+
+        Task DeleteRangeAsync(IEnumerable<AuthorBookDto> authorBooks);
+
+        Task CreateRangeAsync(IEnumerable<AuthorBookDto> authorBooks);
     }
 }

@@ -14,5 +14,7 @@ namespace Bookstore.Application.Common.Interfaces.Repositories
         Task<IEnumerable<BookDto>> GetBooksByGenreAsync(List<int> genresId);
 
         Task<IEnumerable<BookPreview>> GetBookPreviewsAsync();
+
+        Task<BookDetails> GetBookDetailsAsync(int id);
     }
 }
