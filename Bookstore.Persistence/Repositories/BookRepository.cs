@@ -54,6 +54,20 @@ namespace Bookstore.Persistence.Repositories
 
             return mappedList;
         }
+
+        public async Task<BookDetails> GetBookDetailsAsync(int id)
+        {
+            var books = await _context.Books
+               .AsNoTrackingWithIdentityResolution()
+               .Include(b => b.AuthorBooks)
+                   .ThenInclude(ab => ab.Author)
+               .Include(b => b.Genre)
+               .ProjectTo<BookDetails>(_mapper.ConfigurationProvider)
+               .SingleAsync(x => x.Id == id);
+
+            return books;
+        }
+
         /// <summary>
         /// AsNoTrackingWithIdentityResolution -as a rule, faster 
         ///a normal query, but slower than the same query with AsNoTrack ing. 
