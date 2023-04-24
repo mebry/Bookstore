@@ -5,7 +5,7 @@ namespace Bookstore.Application.Common.Interfaces.Repositories
 {
     public interface IBookRepository:IRepository<BookDto>
     {
-        Task<IEnumerable<BookDto>> SearchByNameAsync(string name);
+        Task<IEnumerable<BookPreview>> SearchByNameAsync(string name);
 
         Task<bool> SetSoftDeleteAsync(int id);
 

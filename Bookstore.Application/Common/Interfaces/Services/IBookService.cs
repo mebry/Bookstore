@@ -10,7 +10,7 @@ namespace Bookstore.Application.Common.Interfaces.Services
 
         Task<Response<IEnumerable<BookDto>>> GetSoftDeletedBooksAsync();
 
-        Task<Response<IEnumerable<BookDto>>> SearchByNameAsync(string name);
+        Task<Response<IEnumerable<BookPreview>>> SearchByNameAsync(string name);
 
         Task<Response<IEnumerable<BookPreview>>> GetBookPreviewsAsync();
 

@@ -124,17 +124,16 @@ namespace Bookstore.Persistence.Repositories
             return mappedList;
         }
 
-        public async Task<IEnumerable<BookDto>> SearchByNameAsync(string name)
+        public async Task<IEnumerable<BookPreview>> SearchByNameAsync(string name)
         {
             var dataList = await _context.Books
                 .AsNoTracking()
                 .Where(e => e.Name.ToLower()
                 .Contains(name.ToLower()))
+                .ProjectTo<BookPreview>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            var mappedList = _mapper.Map<IEnumerable<BookDto>>(dataList);
-
-            return mappedList;
+            return dataList;
         }
 
         public async Task<bool> SetSoftDeleteAsync(int id)

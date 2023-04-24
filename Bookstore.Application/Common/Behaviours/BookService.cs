@@ -245,9 +245,9 @@ namespace Bookstore.Application.Common.Behaviours
             }
         }
 
-        public async Task<Response<IEnumerable<BookDto>>> SearchByNameAsync(string name)
+        public async Task<Response<IEnumerable<BookPreview>>> SearchByNameAsync(string name)
         {
-            var response = new Response<IEnumerable<BookDto>>();
+            var response = new Response<IEnumerable<BookPreview>>();
             try
             {
                 if (string.IsNullOrWhiteSpace(name))
