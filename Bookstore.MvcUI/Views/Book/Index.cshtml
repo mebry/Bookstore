@@ -1,4 +1,5 @@
-﻿@using Bookstore.MvcUI.ViewModels.Outgoing;
+﻿@using Bookstore.Application.Shared.Identity;
+@using Bookstore.MvcUI.ViewModels.Outgoing;
 @model IEnumerable<BookForDisplay>
 
 @{
@@ -24,7 +25,11 @@
         Show all books
     </button>
 </div>
-@await Html.PartialAsync("_CreateEntity", "Book")
+
+@if (User.Identity.IsAuthenticated && User.IsInRole(AvailableRoles.Admin))
+{
+    @await Html.PartialAsync("_CreateEntity", "Book")
+}
 
 @section scripts {
     <script>
