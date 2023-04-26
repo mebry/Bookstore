@@ -27,13 +27,19 @@ namespace Bookstore.Infrastructure.Configurations
             services.AddScoped<IDbContextInitializer, BookstoreDbContextInitializer>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            
+
             services.AddScoped<IAuthorRepository, AuthorRepository>()
                 .AddScoped<IBookRepository, BookRepository>()
-                .AddScoped<IAuthorBookRepository,AuthorBookRepository>()
-                .AddScoped<IGenreRepository,GenreRepository>();
+                .AddScoped<IAuthorBookRepository, AuthorBookRepository>()
+                .AddScoped<IGenreRepository, GenreRepository>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BookstoreDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters = ".@abcdefghijklmnopqrstuvwxyz";
+            })
+                .AddEntityFrameworkStores<BookstoreDbContext>();
 
             return services;
         }

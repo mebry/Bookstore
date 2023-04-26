@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Bookstore.Application.Common.Interfaces.Context;
+using Bookstore.Application.Shared.Identity;
 using Bookstore.Application.Shared.Models;
 using Bookstore.Infrastructure.Persistance.DataContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 
@@ -22,11 +24,11 @@ namespace Bookstore.Infrastructure.Persistance.Initializers
         {
             if (!_context.Authors.Any())
             {
-              
+
                 await _context.SaveChangesAsync();
             }
 
-            if (!_context.Books.Any()&& !_context.Genres.Any()&&!_context.Authors.Any())
+            if (!_context.Books.Any() && !_context.Genres.Any() && !_context.Authors.Any())
             {
                 var comedy = new Genre
                 {
@@ -38,7 +40,7 @@ namespace Bookstore.Infrastructure.Persistance.Initializers
                     Name = "Фантастика"
                 };
 
-                var novel= new Genre
+                var novel = new Genre
                 {
                     Name = "Роман"
                 };
@@ -100,7 +102,7 @@ namespace Bookstore.Infrastructure.Persistance.Initializers
                          "такие как \"Преступление и наказание\", \"Братья Карамазовы\""
                 };
 
-                var harperLee= new Author
+                var harperLee = new Author
                 {
                     FirstName = "Харпер",
                     LastName = "Ли",
@@ -141,7 +143,7 @@ namespace Bookstore.Infrastructure.Persistance.Initializers
                     Name = "Гарри Поттер и философский камень"
                 };
 
-                var secondBook= new Book
+                var secondBook = new Book
                 {
                     ImageURL = "https://s1-goods.ozstatic.by/2000/70/87/101/101087070_0.jpg",
                     CreatedAt = DateTime.ParseExact("26/03/1867", "dd/MM/yyyy", CultureInfo.InvariantCulture),
@@ -154,7 +156,7 @@ namespace Bookstore.Infrastructure.Persistance.Initializers
                     Name = "Война и мир"
                 };
 
-                var thirdBook= new Book
+                var thirdBook = new Book
                 {
                     ImageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPpl2cPRLs66ExPhTIr2KxieYaAzxue7jXpw&usqp=CAU",
                     CreatedAt = DateTime.ParseExact("17/08/1945", "dd/MM/yyyy", CultureInfo.InvariantCulture),
@@ -248,6 +250,65 @@ namespace Bookstore.Infrastructure.Persistance.Initializers
             }
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task InitialiseUsersAndRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            string adminEmail = "admin@gmail.com";
+            string adminPassword = "Admin1234_";
+            string firstNameAdmin = "Vadim";
+            string lastNameAdmin = "Goncharov";
+
+            string clientEmail = "mebry@gmail.com";
+            string clientPassword = "Mebry1234_";
+            string firstNameClient = "Mebry";
+            string lastNameClient = "Goncharov";
+
+            if (await roleManager.FindByNameAsync("Admin") == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+
+            if (await roleManager.FindByNameAsync("Client") == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole("Client"));
+            }
+
+            if (await userManager.FindByNameAsync(adminEmail) == null)
+            {
+                ApplicationUser admin = new ApplicationUser
+                {
+                    Email = adminEmail,
+                    UserName = adminEmail,
+                    FirstName = firstNameAdmin,
+                    LastName = lastNameAdmin,
+                };
+
+                IdentityResult result = await userManager.CreateAsync(admin, adminPassword);
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
+            }
+
+            if (await userManager.FindByNameAsync(clientEmail) == null)
+            {
+                ApplicationUser client = new ApplicationUser
+                {
+                    Email = clientEmail,
+                    UserName = clientEmail,
+                    FirstName = firstNameClient,
+                    LastName = lastNameClient
+                };
+
+                IdentityResult result = await userManager.CreateAsync(client, clientPassword);
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(client, "Client");
+                }
+            }
         }
     }
 }
