@@ -12,7 +12,8 @@ namespace Bookstore.Application.Configurations
             services.AddScoped<IAuthorService, AuthorService>()
                 .AddScoped<IAuthorBookService, AuthorBookService>()
                 .AddScoped<IBookService, BookService>()
-                .AddScoped<IGenreService, GenreService>();
+                .AddScoped<IGenreService, GenreService>()
+                .AddScoped<IAccountService, AccountService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             return services;
