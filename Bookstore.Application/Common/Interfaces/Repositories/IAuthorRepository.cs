@@ -8,6 +8,6 @@ namespace Bookstore.Application.Common.Interfaces.Repositories
 
         Task<IEnumerable<AuthorDto>> GetSoftDeletedAuthorsAsync();
 
-        Task<IEnumerable<AuthorDto>> SearchByLastNameAsync(string authorName);
+        Task<IEnumerable<AuthorDto>> SearchByNameAsync(string authorName);
     }
 }

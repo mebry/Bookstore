@@ -73,11 +73,11 @@ namespace Bookstore.Persistence.Repositories
             return mappedList;
         }
 
-        public async Task<IEnumerable<AuthorDto>> SearchByLastNameAsync(string authorName)
+        public async Task<IEnumerable<AuthorDto>> SearchByNameAsync(string authorName)
         {
             var dataList = await _context.Authors
                 .AsNoTracking()
-                .Where(e => e.LastName.ToLower()
+                .Where(e => (e.LastName.ToLower() + e.FirstName.ToLower())
                 .Contains(authorName.ToLower()))
                 .ToListAsync();
 

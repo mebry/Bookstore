@@ -176,7 +176,7 @@ namespace Bookstore.Application.Common.Behaviours
             }
         }
 
-        public async Task<Response<IEnumerable<AuthorDto>>> SearchByLastNameAsync(string authorName)
+        public async Task<Response<IEnumerable<AuthorDto>>> SearchByNameAsync(string authorName)
         {
             var response = new Response<IEnumerable<AuthorDto>>();
             try
@@ -190,7 +190,7 @@ namespace Bookstore.Application.Common.Behaviours
                     return response;
                 }
 
-                var authors = await _authorReposotiry.SearchByLastNameAsync(authorName);
+                var authors = await _authorReposotiry.SearchByNameAsync(authorName);
 
                 response.Data = authors;
                 response.Description = "The author was received successfully";
