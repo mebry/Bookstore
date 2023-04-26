@@ -183,5 +183,43 @@ namespace Bookstore.MvcUI.Controllers
 
             return View("Success", "Book");
         }
+
+
+        public async Task<IActionResult> Search(string bookName)
+        {
+            if (string.IsNullOrWhiteSpace(bookName))
+            {
+                return PartialView("_BookList", new List<BookForDisplay>());
+            }
+
+            var result = await _bookService.SearchByNameAsync(bookName);
+
+            if (result.StatusCode != Domain.Enums.StatusCode.OK)
+            {
+                View("Error",
+                   new ErrorViewModel
+                   {
+                       Controller = "Book",
+                       Description = result.Description
+                   });
+            }
+            var mappedBooks = _mapper.Map<IEnumerable<BookForDisplay>>(result.Data);
+
+            return PartialView("_BookList", mappedBooks);
+        }
+
+        public async Task<IActionResult> ShowAllWithPartialView()
+        {
+            var books = await _bookService.GetBookPreviewsAsync();
+
+            var mappedBooks = _mapper.Map<IEnumerable<BookForDisplay>>(books.Data);
+
+            return PartialView("_BookList", mappedBooks);
+        }
+
+        public async Task<IActionResult> Test()
+        {
+            return View("SuccessSignUp");
+        }
     }
 }

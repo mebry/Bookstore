@@ -5,7 +5,6 @@ using Bookstore.MvcUI.Models.Outgoing;
 using Bookstore.MvcUI.ViewModels.Incoming;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Bookstore.MvcUI.ViewModels;
 using Bookstore.MvcUI.Models;
 
 namespace Bookstore.MvcUI.Controllers
@@ -138,6 +137,38 @@ namespace Bookstore.MvcUI.Controllers
             await _authorService.DeleteAsync(id);
 
             return View("Success", "Author");
+        }
+
+        public async Task<IActionResult> Search(string authorName)
+        {
+            if (string.IsNullOrWhiteSpace(authorName))
+            {
+                return PartialView("_AuthorList", new List<AuthorForDisplay>());
+            }
+
+            var result = await _authorService.SearchByNameAsync(authorName);
+
+            if (result.StatusCode != Domain.Enums.StatusCode.OK)
+            {
+                View("Error",
+                   new ErrorViewModel
+                   {
+                       Controller = "Author",
+                       Description = result.Description
+                   });
+            }
+            var mappedAuthors = _mapper.Map<IEnumerable<AuthorForDisplay>>(result.Data);
+
+            return PartialView("_AuthorList", mappedAuthors);
+        }
+
+        public async Task<IActionResult> ShowAllWithPartialView()
+        {
+            var authors = await _authorService.GetAllAsync();
+
+            var mappedAuthors = _mapper.Map<IEnumerable<AuthorForDisplay>>(authors.Data);
+
+            return PartialView("_AuthorList", mappedAuthors);
         }
     }
 }
