@@ -1,5 +1,6 @@
 ﻿@using Bookstore.Application.Shared.Identity;
 @using Bookstore.MvcUI.ViewModels.Outgoing;
+@using Bookstore.MvcUI.CustomHtmlHelpers;
 @model IEnumerable<BookForDisplay>
 
 @{
@@ -28,7 +29,8 @@
 
 @if (User.Identity.IsAuthenticated && User.IsInRole(AvailableRoles.Admin))
 {
-    @await Html.PartialAsync("_CreateEntity", "Book")
+    @Html.CreateEntityButton("Book");
+    
 }
 
 @section scripts {

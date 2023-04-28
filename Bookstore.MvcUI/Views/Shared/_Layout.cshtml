@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Bookstore.Application.Shared.Identity;
+@inject UserManager<ApplicationUser> UserManager;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,6 +9,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Bookstore.MvcUI.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+
 </head>
 <body>
     <header>
@@ -20,12 +24,66 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Books</a>
+
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Author" asp-action="Index">Authors</a>
                         </li>
+                        @if (User.IsInRole(AvailableRoles.Client))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Orders" asp-action="Index">
+                                    Cart
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Orders" asp-action="Index">
+                                    Orders
+                                </a>
+                            </li>
+                        }
                     </ul>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a class="btn btn-outline-success my-2 my-sm-0" asp-controller="Account" asp-action="Login">
+                            <i class="bi bi-box-arrow-in-right"></i> Log in
+                        </a>
+                        <span style="padding: 5px;"></span>
+
+                        <a class="btn btn-outline-primary my-2 my-sm-0" asp-controller="Account" asp-action="Register">
+                            <i class="bi bi-person-plus"></i> Register
+                        </a>
+                    }
+                    else
+                    {
+
+                        @*User profile section*@
+
+                        <button class="btn btn-outline-success dropdown-toggle" type="button" id="profile-btn" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-person-badge"></i>
+                            <a asp-controller="Account" asp-action="Update">
+                                Hello @UserManager.GetUserName(User)
+                            </a>
+                        </button>
+
+                        @*@if (User.IsInRole(AvailableRoles.Admin))
+                    {
+                    <li>
+                    <a class="dropdown-item" asp-controller="Account" asp-action="Users">
+                    <i class="bi bi-people"></i> Users
+                    </a>
+                    </li>
+                    }*@
+
+                        <span style="padding: 5px;"></span>
+                        <form asp-controller="Account" asp-action="Logout">
+                            <button class="btn btn-outline-danger my-2 my-sm-0">
+                                <i class="bi bi-box-arrow-in-right"></i> Log out
+                            </button>
+                        </form>
+                    }
                 </div>
             </div>
         </nav>
