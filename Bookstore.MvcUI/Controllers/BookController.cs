@@ -41,6 +41,16 @@ namespace Bookstore.MvcUI.Controllers
         {
             var bookDetails = await _bookService.GetBookDetailsAsync(id);
 
+            if (bookDetails.StatusCode != Domain.Enums.StatusCode.OK)
+            {
+                return View("Error",
+                    new ErrorViewModel
+                    {
+                        Controller = "Book",
+                        Description = bookDetails.Description
+                    });
+            }
+
             var mappedBook = _mapper.Map<BookDetailsForDisplay>(bookDetails.Data);
 
             return View(mappedBook);
@@ -215,11 +225,6 @@ namespace Bookstore.MvcUI.Controllers
             var mappedBooks = _mapper.Map<IEnumerable<BookForDisplay>>(books.Data);
 
             return PartialView("_BookList", mappedBooks);
-        }
-
-        public async Task<IActionResult> Test()
-        {
-            return View("SuccessSignUp");
         }
     }
 }
