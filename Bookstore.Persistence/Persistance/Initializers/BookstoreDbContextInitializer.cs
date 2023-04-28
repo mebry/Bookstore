@@ -264,14 +264,17 @@ namespace Bookstore.Infrastructure.Persistance.Initializers
             string firstNameClient = "Mebry";
             string lastNameClient = "Goncharov";
 
-            if (await roleManager.FindByNameAsync("Admin") == null)
+            string adminRole = AvailableRoles.Admin;
+            string clientRole = AvailableRoles.Client;
+
+            if (await roleManager.FindByNameAsync(adminRole) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole("Admin"));
+                await roleManager.CreateAsync(new IdentityRole(adminRole));
             }
 
-            if (await roleManager.FindByNameAsync("Client") == null)
+            if (await roleManager.FindByNameAsync(clientRole) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole("Client"));
+                await roleManager.CreateAsync(new IdentityRole(clientRole));
             }
 
             if (await userManager.FindByNameAsync(adminEmail) == null)
@@ -288,7 +291,7 @@ namespace Bookstore.Infrastructure.Persistance.Initializers
 
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(admin, "Admin");
+                    await userManager.AddToRoleAsync(admin, adminRole);
                 }
             }
 
@@ -306,7 +309,7 @@ namespace Bookstore.Infrastructure.Persistance.Initializers
 
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(client, "Client");
+                    await userManager.AddToRoleAsync(client, clientRole);
                 }
             }
         }

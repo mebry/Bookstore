@@ -37,7 +37,6 @@ namespace Bookstore.Infrastructure.Configurations
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.User.RequireUniqueEmail = true;
-                options.User.AllowedUserNameCharacters = ".@abcdefghijklmnopqrstuvwxyz";
             })
                 .AddEntityFrameworkStores<BookstoreDbContext>();
 
