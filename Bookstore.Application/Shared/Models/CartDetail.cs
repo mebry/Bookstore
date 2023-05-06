@@ -10,8 +10,6 @@
 
         public int Quantity { get; set; }
 
-        public double UnitPrice { get; set; }
-
         public Book? Book { get; set; }
 
         public Cart? Cart { get; set; }

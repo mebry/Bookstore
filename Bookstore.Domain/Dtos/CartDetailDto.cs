@@ -11,7 +11,5 @@ namespace Bookstore.Domain.Dtos
         public int BookId { get; set; }
         
         public int Quantity { get; set; }
-        
-        public double UnitPrice { get; set; }
     }
 }
