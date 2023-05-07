@@ -141,3 +141,38 @@ body {
 .form-control:invalid:focus {
     border-color: #dc3545;
 }
+
+
+.table-info {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    margin: 20px auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.table-info th,
+.table-info td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.table-info thead {
+    background-color: #444;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.table-info tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-info tbody tr:hover {
+    background-color: #ddd;
+}
+
+.table-info .btn {
+    margin-right: 5px;
+}
