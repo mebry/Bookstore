@@ -5,12 +5,10 @@
 }
 
 <div class="container my-4">
-
-    <h2 class="text-center mb-4">My Cart</h2>
-
     @if (Model.Any())
     {
-        <table class="table-cart">
+        <h2 class="text-center mb-4">My Cart</h2>
+        <table class="table-info">
             <thead>
                 <tr>
                     <th>Image</th>
@@ -29,7 +27,7 @@
                         </td>
                         <td>@item.BookName</td>
                         <td>@item.UnitPrice X @item.Quantity</td>
-                        <td>@(item.UnitPrice * item.Quantity)</td>
+                        <td>@((item.UnitPrice * item.Quantity).ToString("c"))</td>
                         <td>
                             <a class="btn btn-info rounded-pill px-3 py-2" href="/Cart/AddItem?id=@item.BookId">+</a>
                             <a class="btn btn-info rounded-pill px-3 py-2" href="/cart/Removeitem?id=@item.BookId">-</a>
@@ -41,16 +39,25 @@
 
         <div class="mt-4">
             <h4 class="d-inline-block">Total sum: </h4>
-            <h4 class="d-inline-block">@Model.Select(item => item.UnitPrice * item.Quantity).Sum()</h4>
+            <h4 class="d-inline-block">@Model.Select(item => item.UnitPrice * item.Quantity).Sum().ToString("c")</h4>
         </div>
 
         <div class="mt-4">
             <a class="btn btn-secondary" href="/Book">Continue shopping</a>
-            <a class="btn btn-primary" href="/Cart/Checkout">Checkout</a>
+            <a class="btn btn-primary" href="/Order/CreateOrder">Checkout</a>
         </div>
     }
     else
     {
-        <p class="text-muted text-center my-5">Cart is empty.</p>
+        <div class="row">
+            <div class="col-md-6 offset-3 alert alert-secondary text-center">
+                <h2 class="text-muted font-weight-bold">Cart is empty</h2>
+                <hr />
+                <p class="text-muted">You need to add something to your cart</p>
+                <div class="text-center">
+                    @Html.ActionLink("Continue shopping", "Index", "Book", null, new { @class = "btn btn-secondary btn-sm mt-3 mx-auto d-block" })
+                </div>
+            </div>
+        </div>
     }
 </div>

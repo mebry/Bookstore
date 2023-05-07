@@ -33,12 +33,12 @@
                         @if (User.IsInRole(AvailableRoles.Client))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Orders" asp-action="Index">
+                                <a class="nav-link text-dark" asp-controller="Cart" asp-action="Index">
                                     Cart
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Orders" asp-action="Index">
+                                <a class="nav-link text-dark" asp-controller="Order" asp-action="Index">
                                     Orders
                                 </a>
                             </li>
@@ -57,7 +57,6 @@
                     }
                     else
                     {
-
                         @*User profile section*@
 
                         <button class="btn btn-outline-success dropdown-toggle" type="button" id="profile-btn" data-toggle="dropdown"
@@ -67,16 +66,6 @@
                                 Hello @UserManager.GetUserName(User)
                             </a>
                         </button>
-
-                        @*@if (User.IsInRole(AvailableRoles.Admin))
-                    {
-                    <li>
-                    <a class="dropdown-item" asp-controller="Account" asp-action="Users">
-                    <i class="bi bi-people"></i> Users
-                    </a>
-                    </li>
-                    }*@
-
                         <span style="padding: 5px;"></span>
                         <form asp-controller="Account" asp-action="Logout">
                             <button class="btn btn-outline-danger my-2 my-sm-0">
