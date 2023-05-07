@@ -52,7 +52,7 @@ namespace Bookstore.Application.Common.Behaviours
                     return response;
                 }
 
-                var isFoundCart = await _cartRepository.IsExistUserCart(userId);
+                var isFoundCart = await _cartRepository.IsExistUserCartAsync(userId);
 
                 if (!isFoundCart)
                 {
@@ -63,9 +63,9 @@ namespace Bookstore.Application.Common.Behaviours
                 }
                 else
                 {
-                    var foundCart = await _cartRepository.GetByUserId(userId);
+                    var foundCart = await _cartRepository.GetByUserIdAsync(userId);
 
-                    var isFoundCartDetails = await _cartDetailRepository.IsExistCartDetail(foundCart.Id, bookId);
+                    var isFoundCartDetails = await _cartDetailRepository.IsExistCartDetailAsync(foundCart.Id, bookId);
 
                     if (!isFoundCartDetails)
                     {
@@ -134,11 +134,11 @@ namespace Bookstore.Application.Common.Behaviours
                     return response;
                 }
 
-                var foundCart = await _cartRepository.GetByUserId(userId);
+                var foundCart = await _cartRepository.GetByUserIdAsync(userId);
 
                 if (foundCart is not null)
                 {
-                    var isFoundCartDetail = await _cartDetailRepository.IsExistCartDetail(foundCart.Id, bookId);
+                    var isFoundCartDetail = await _cartDetailRepository.IsExistCartDetailAsync(foundCart.Id, bookId);
 
                     if (isFoundCartDetail)
                     {

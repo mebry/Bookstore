@@ -6,8 +6,10 @@ namespace Bookstore.Application.Common.Interfaces.Repositories
     {
         Task<CartDto> CreateAsync(CartDto entity);
 
-        Task<bool> IsExistUserCart(string userId);
+        Task<bool> IsExistUserCartAsync(string userId);
 
-        Task<CartDto> GetByUserId(string userId);
+        Task<CartDto> GetByUserIdAsync(string userId);
+
+        Task ResetCartAsync(int cartId);
     }
 }

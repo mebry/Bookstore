@@ -13,6 +13,6 @@ namespace Bookstore.Application.Common.Interfaces.Repositories
 
         Task<IEnumerable<CartDetailsPreview>> GetCartDetailsByUserIdAsync(string userId);
 
-        Task<bool> IsExistCartDetail(int cartId, int bookId);
+        Task<bool> IsExistCartDetailAsync(int cartId, int bookId);
     }
 }
