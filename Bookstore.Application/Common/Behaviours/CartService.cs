@@ -79,7 +79,7 @@ namespace Bookstore.Application.Common.Behaviours
 
                 response.Data = true;
                 response.Description = "The cart detail was added successfully";
-                response.StatusCode = StatusCode.NotFound;
+                response.StatusCode = StatusCode.OK;
 
                 return response;
 
@@ -145,7 +145,7 @@ namespace Bookstore.Application.Common.Behaviours
                         await _cartDetailRepository.DeleteCartDetailAsync(foundCart.Id, bookId, quantity);
 
                         response.Data = true;
-                        response.Description = "Cart not found";
+                        response.Description = "The cart detail was removed successfully";
                         response.StatusCode = StatusCode.OK;
 
                         return response;
