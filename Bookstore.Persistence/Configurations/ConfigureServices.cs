@@ -31,7 +31,11 @@ namespace Bookstore.Infrastructure.Configurations
             services.AddScoped<IAuthorRepository, AuthorRepository>()
                 .AddScoped<IBookRepository, BookRepository>()
                 .AddScoped<IAuthorBookRepository, AuthorBookRepository>()
-                .AddScoped<IGenreRepository, GenreRepository>();
+                .AddScoped<IGenreRepository, GenreRepository>()
+                .AddScoped<ICartRepository, CartRepository>()
+                .AddScoped<ICartDetailRepository, CartDetailRepository>()
+                .AddScoped<IOrderRepository, OrderRepository>()
+                .AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
