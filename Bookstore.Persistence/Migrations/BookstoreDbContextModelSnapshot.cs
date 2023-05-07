@@ -192,18 +192,13 @@ namespace Bookstore.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("UserId");
-
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
                 });
@@ -224,9 +219,6 @@ namespace Bookstore.Infrastructure.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -296,19 +288,13 @@ namespace Bookstore.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails", t =>
-                        {
-                            t.HasCheckConstraint("UnitPrice", "UnitPrice > 0");
-                        });
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -476,11 +462,13 @@ namespace Bookstore.Infrastructure.Migrations
 
             modelBuilder.Entity("Bookstore.Application.Shared.Models.Cart", b =>
                 {
-                    b.HasOne("Bookstore.Application.Shared.Identity.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Bookstore.Application.Shared.Identity.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("ApplicationUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Bookstore.Application.Shared.Models.CartDetail", b =>
