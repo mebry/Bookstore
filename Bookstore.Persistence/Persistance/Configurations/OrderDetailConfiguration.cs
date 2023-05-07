@@ -17,8 +17,6 @@ namespace Bookstore.Infrastructure.Persistance.Configurations
                 .WithMany(p => p.OrderDetails)
                 .HasForeignKey(p => p.BookId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.ToTable(t => t.HasCheckConstraint("UnitPrice", "UnitPrice > 0"));
         }
     }
 }

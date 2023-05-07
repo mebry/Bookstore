@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Bookstore.Application.Shared.Models;
-using Bookstore.Domain;
+using Bookstore.Domain.DisplayModels;
+using Bookstore.Domain.Dtos;
 
 namespace Bookstore.Persistence.Profiles
 {
@@ -8,8 +9,12 @@ namespace Bookstore.Persistence.Profiles
     {
         public OrderProfile()
         {
-            CreateMap<Domain.Dtos.OrderDto, Order>()
+            CreateMap<OrderDto, Order>()
              .ReverseMap();
+
+            CreateMap<Order, OrderInformation>()
+            .ForMember(dest => dest.TotalPrice,
+                opt => opt.MapFrom(src => src.OrderDetails.Sum(od => od.Book.Price * od.Quantity)));
         }
     }
 }

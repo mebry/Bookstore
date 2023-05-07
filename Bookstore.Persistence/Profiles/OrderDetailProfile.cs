@@ -10,6 +10,7 @@ namespace Bookstore.Persistence.Profiles
         {
             CreateMap<OrderDetailDto, OrderDetail>()
              .ReverseMap();
+
         }
     }
 }

@@ -1,8 +1,12 @@
-﻿using Bookstore.Domain.Dtos;
+﻿using Bookstore.Domain.DisplayModels;
+using Bookstore.Domain.Dtos;
 
 namespace Bookstore.Application.Common.Interfaces.Repositories
 {
-    public interface IOrderRepository:IRepository<OrderDto>
+    public interface IOrderRepository
     {
+        Task<OrderDto> CreateAsync(OrderDto entity);
+
+        Task<IEnumerable<OrderInformation>> GetOrdersByUserAsync(string userId);
     }
 }
