@@ -52,9 +52,9 @@ namespace Bookstore.Application.Common.Behaviours
                     return response;
                 }
 
-                var foundCart = await _cartRepository.GetByUserId(userId);
+                var isFoundCart = await _cartRepository.IsExistUserCart(userId);
 
-                if (foundCart is null)
+                if (!isFoundCart)
                 {
                     var cart = await _cartRepository.CreateAsync(new CartDto() { UserId = userId });
 
@@ -63,11 +63,13 @@ namespace Bookstore.Application.Common.Behaviours
                 }
                 else
                 {
+                    var foundCart = await _cartRepository.GetByUserId(userId);
+
                     var isFoundCartDetails = await _cartDetailRepository.IsExistCartDetail(foundCart.Id, bookId);
 
                     if (!isFoundCartDetails)
                     {
-                        await _cartDetailRepository.CreateAsync(new CartDetailDto { BookId = bookId, Quantity = quantity });
+                        await _cartDetailRepository.CreateAsync(new CartDetailDto { CartId = foundCart.Id, BookId = bookId, Quantity = quantity });
                     }
                     else
                     {

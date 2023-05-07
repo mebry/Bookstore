@@ -8,7 +8,7 @@ namespace Bookstore.Application.Shared.Models
 
         public string UserId { get; set; } = string.Empty;
 
-        public ApplicationUser? ApplicationUser { get; set; }
+        public ApplicationUser? User { get; set; }
 
         public List<CartDetail> CartDetails { get; set; } = new();
     }

@@ -13,5 +13,7 @@
         public double UnitPrice { get; set; }
 
         public string BookImageURL { get; set; } = string.Empty;
+
+        public string BookName { get; set; } = string.Empty;
     }
 }
