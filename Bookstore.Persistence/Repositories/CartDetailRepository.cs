@@ -39,7 +39,7 @@ namespace Bookstore.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> IsExistCartDetail(int cartId, int bookId)
+        public async Task<bool> IsExistCartDetailAsync(int cartId, int bookId)
         {
             var isFound = await _context.CartDetails.AsNoTracking()
                 .AnyAsync(i => i.CartId == cartId && i.BookId == bookId);

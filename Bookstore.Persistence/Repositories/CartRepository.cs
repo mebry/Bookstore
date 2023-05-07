@@ -31,7 +31,7 @@ namespace Bookstore.Infrastructure.Repositories
             return cart;
         }
 
-        public async Task<CartDto> GetByUserId(string userId)
+        public async Task<CartDto> GetByUserIdAsync(string userId)
         {
             var cart = await _context.Carts.FirstOrDefaultAsync(i => i.UserId == userId);
 
@@ -40,11 +40,26 @@ namespace Bookstore.Infrastructure.Repositories
             return mappedCart;
         }
 
-        public async Task<bool> IsExistUserCart(string userId)
+        public async Task<bool> IsExistUserCartAsync(string userId)
         {
             var isFound = await _context.Carts.AnyAsync(c => c.UserId == userId);
 
             return isFound;
+        }
+
+        public async Task ResetCartAsync(int cartId)
+        {
+            var cartDetails = await _context.CartDetails
+                .AsNoTracking()
+                .Where(i => i.CartId == cartId)
+                .ToListAsync();
+
+            if (cartDetails is not null && cartDetails.Any())
+            {
+                _context.CartDetails.RemoveRange(cartDetails);
+
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -34,7 +34,6 @@ namespace Bookstore.Infrastructure.Persistance.DataContext
             modelBuilder.ApplyConfiguration(new GenreConfiguration());
             modelBuilder.ApplyConfiguration(new AuthorBookConfiguration());
             modelBuilder.ApplyConfiguration(new BookConfiguration());
-            modelBuilder.ApplyConfiguration(new CartConfiguration());
             modelBuilder.ApplyConfiguration(new CartDetailConfiguration());
             modelBuilder.ApplyConfiguration(new AuthorBookConfiguration());
             modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
