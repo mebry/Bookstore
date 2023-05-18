@@ -86,6 +86,22 @@ namespace Bookstore.Application.Common.Behaviours
 
                 return response;
             }
+            catch (DbUpdateException ex)
+            {
+                response.Data = false;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.BadRequest;
+
+                return response;
+            }
+            catch (System.InvalidOperationException ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.NotFound;
+
+                return response;
+            }
             catch (Exception ex)
             {
                 response.Data = false;
@@ -149,6 +165,14 @@ namespace Bookstore.Application.Common.Behaviours
 
                 return response;
             }
+            catch (System.InvalidOperationException ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.NotFound;
+
+                return response;
+            }
             catch (Exception ex)
             {
                 response.Data = null;
@@ -205,6 +229,14 @@ namespace Bookstore.Application.Common.Behaviours
                 return response;
             }
             catch (DbUpdateConcurrencyException ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.NotFound;
+
+                return response;
+            }
+            catch (System.InvalidOperationException ex)
             {
                 response.Data = null;
                 response.Description = ex.Message;
@@ -341,6 +373,14 @@ namespace Bookstore.Application.Common.Behaviours
                 return response;
             }
             catch (DbUpdateConcurrencyException ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.NotFound;
+
+                return response;
+            }
+            catch (System.InvalidOperationException ex)
             {
                 response.Data = null;
                 response.Description = ex.Message;
@@ -525,6 +565,14 @@ namespace Bookstore.Application.Common.Behaviours
                 return response;
             }
             catch (DbUpdateConcurrencyException ex)
+            {
+                response.Data = null;
+                response.Description = ex.Message;
+                response.StatusCode = StatusCode.NotFound;
+
+                return response;
+            }
+            catch (System.InvalidOperationException ex)
             {
                 response.Data = null;
                 response.Description = ex.Message;
