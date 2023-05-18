@@ -139,7 +139,7 @@ namespace Bookstore.Persistence.Repositories
         public async Task<bool> SetSoftDeleteAsync(int id)
         {
             var foundEntity = await _context.Books
-                .AsNoTracking()
+                .IgnoreQueryFilters()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (foundEntity is null)
