@@ -96,7 +96,7 @@ namespace Bookstore.Application.Common.Behaviours
             }
             catch (System.InvalidOperationException ex)
             {
-                response.Data = null;
+                response.Data = false;
                 response.Description = ex.Message;
                 response.StatusCode = StatusCode.NotFound;
 

@@ -12,15 +12,10 @@ namespace Bookstore.WebApi.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
-        private readonly IGenreService _genreService;
-        private readonly IAuthorService _authorService;
 
-        public BookController(IBookService bookService, IGenreService genreService,
-            IAuthorService authorService)
+        public BookController(IBookService bookService)
         {
             _bookService = bookService;
-            _genreService = genreService;
-            _authorService = authorService;
         }
 
         [HttpGet("{id}")]

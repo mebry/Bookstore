@@ -30,6 +30,10 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Author" asp-action="Index">Authors</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="ShowDocumentation">Documentation</a>
+
+                        </li>
                         @if (User.IsInRole(AvailableRoles.Client))
                         {
                             <li class="nav-item">

@@ -104,7 +104,6 @@ namespace Bookstore.MvcUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, BookForUpdate bookForUpdate)
         {
-
             if (!ModelState.IsValid)
             {
                 var genres = await _genreService.GetAllAsync();
@@ -225,6 +224,11 @@ namespace Bookstore.MvcUI.Controllers
             var mappedBooks = _mapper.Map<IEnumerable<BookForDisplay>>(books.Data);
 
             return PartialView("_BookList", mappedBooks);
+        }
+
+        public IActionResult ShowDocumentation()
+        {
+            return View();
         }
     }
 }

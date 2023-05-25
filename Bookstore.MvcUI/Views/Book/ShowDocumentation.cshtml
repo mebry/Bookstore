@@ -1,0 +1,278 @@
+﻿<h1>BookController Documentation</h1>
+<p>The BookController provides APIs for managing books in the bookstore.</p>
+
+<h2>API Endpoints</h2>
+<table>
+    <tr>
+        <th>Endpoint</th>
+        <th>HTTP Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>/api/Book/{id}</td>
+        <td>GET</td>
+        <td>Retrieves a book by its ID.</td>
+    </tr>
+    <tr>
+        <td>/api/Book/Details/{id}</td>
+        <td>GET</td>
+        <td>Retrieves the detailed information of a book by its ID.</td>
+    </tr>
+    <tr>
+        <td>/api/Book/GetAll</td>
+        <td>GET</td>
+        <td>Retrieves all books.</td>
+    </tr>
+    <tr>
+        <td>/api/Book/UpdateDetails/{id}</td>
+        <td>PUT</td>
+        <td>Updates the details of a book.</td>
+    </tr>
+    <tr>
+        <td>/api/Book/Update{id}</td>
+        <td>PUT</td>
+        <td>Updates a book.</td>
+    </tr>
+    <tr>
+        <td>/api/Book/Create</td>
+        <td>POST</td>
+        <td>Creates a new book with authors.</td>
+    </tr>
+    <tr>
+        <td>/api/Book/{id}</td>
+        <td>DELETE</td>
+        <td>Deletes a book by its ID.</td>
+    </tr>
+    <tr>
+        <td>/api/Book/Search/{bookName}</td>
+        <td>GET</td>
+        <td>Searches for books by name.</td>
+    </tr>
+</table>
+
+<h2>Response Status Codes</h2>
+<ul>
+    <li>200 - OK: The request was successful.</li>
+    <li>400 - Bad Request: The request was malformed or invalid.</li>
+    <li>404 - Not Found: The requested resource was not found.</li>
+    <li>500 - Internal Server Error: An unexpected error occurred on the server.</li>
+</ul>
+
+<h2>Request and Response Examples</h2>
+<p>Below are some examples of the requests and responses for the API endpoints:</p>
+
+<h3>GET /api/Book/{id}</h3>
+<p>Request:</p>
+<pre>
+        GET /api/Book/1
+    </pre>
+<p>Response:</p>
+<pre>
+        200 OK
+        {
+            "Id": 1,
+            "Name": "Book Title",
+            "Description": "Book Description",
+            "Price": 29.99,
+            "ImageURL": "https://example.com/book-image.jpg",
+            "CreatedAt": "2023-05-18T12:00:00Z",
+            "GenreId": 1
+        }
+    </pre>
+
+<h3>GET /api/Book/Details/{id}</h3>
+<p>Request:</p>
+<pre>
+        GET /api/Book/Details/1
+    </pre>
+<p>Response:</p>
+<pre>
+        200 OK
+        {
+            "Id": 1,
+            "Name": "Book Title",
+            "Price": 29.99,
+            "ImageURL": "https://example.com/book-image.jpg",
+            "CreatedAt": "2023-05-18T12:00:00Z",
+            "GenreName": "Fiction",
+            "Description": "Book Description",
+            "Authors": [
+                {
+                    "Id": 1,
+                    "Name": "John Doe",
+                    "Description": "Author Description"
+                },
+                {
+                    "Id": 2,
+                    "Name": "Jane Smith",
+                    "Description": "Author Description"
+                }
+            ]
+        }
+    </pre>
+
+<h3>GET /api/Book/GetAll</h3>
+<p>Request:</p>
+<pre>
+        GET /api/Book/GetAll
+    </pre>
+<p>Response:</p>
+<pre>
+        200 OK
+        [
+            {
+                "Id": 1,
+                "Name": "Book Title",
+                "Price": 29.99,
+                "ImageURL": "https://example.com/book-image.jpg",
+                "CreatedAt": "2023-05-18T12:00:00Z",
+                "GenreName": "Fiction",
+                "Authors": [
+                    "John Doe",
+                    "Jane Smith"
+                ]
+            },
+            {
+                "Id": 2,
+                "Name": "Book Title 2",
+                "Price": 19.99,
+                "ImageURL": "https://example.com/book-image-2.jpg",
+                "CreatedAt": "2023-05-18T13:00:00Z",
+                "GenreName": "Non-fiction",
+                "Authors": [
+                    "John Doe"
+                ]
+            }
+        ]
+    </pre>
+
+<h3>PUT /api/Book/UpdateDetails/{id}</h3>
+<p>Request:</p>
+<pre>
+        PUT /api/Book/UpdateDetails/1
+        Content-Type: application/json
+
+        {
+            "Id": 1,
+            "Name": "Updated Book Title",
+            "Description": "Updated Book Description",
+            "Price": 39.99,
+            "ImageURL": "https://example.com/updated-book-image.jpg",
+            "CreatedAt": "2023-05-18T12:00:00Z",
+            "GenreId": 2,
+            "AuthorsId": [1, 2]
+        }
+    </pre>
+<p>Response:</p>
+<pre>
+        200 OK
+        {
+            "Id": 1,
+            "Name": "Updated Book Title",
+            "Description": "Updated Book Description",
+            "Price": 39.99,
+            "ImageURL": "https://example.com/updated-book-image.jpg",
+            "CreatedAt": "2023-05-18T12:00:00Z",
+            "GenreId": 2,
+            "AuthorsId": [1, 2]
+        }
+    </pre>
+
+<h3>PUT /api/Book/Update{id}</h3>
+<p>Request:</p>
+<pre>
+        PUT /api/Book/Update/1
+        Content-Type: application/json
+
+        {
+            "Id": 1,
+            "Name": "Updated Book Title",
+            "Description": "Updated Book Description",
+            "Price": 39.99,
+            "ImageURL": "https://example.com/updated-book-image.jpg",
+            "CreatedAt": "2023-05-18T12:00:00Z",
+            "GenreId": 2
+        }
+    </pre>
+<p>Response:</p>
+<pre>
+        200 OK
+        {
+            "Id": 1,
+            "Name": "Updated Book Title",
+            "Description": "Updated Book Description",
+            "Price": 39.99,
+            "ImageURL": "https://example.com/updated-book-image.jpg",
+            "CreatedAt": "2023-05-18T12:00:00Z",
+            "GenreId": 2
+        }
+    </pre>
+
+<h3>POST /api/Book/Create</h3>
+<p>Request:</p>
+<pre>
+        POST /api/Book/Create
+        Content-Type: application/json
+
+        {
+            "Id": 1,
+            "Name": "New Book Title",
+            "Description": "New Book Description",
+            "Price": 19.99,
+            "ImageURL": "https://example.com/new-book-image.jpg",
+            "CreatedAt": "2023-05-18T14:00:00Z",
+            "GenreId": 1,
+            "AuthorsId": [1, 2]
+        }
+    </pre>
+<p>Response:</p>
+<pre>
+        200 OK
+        "New book created successfully."
+    </pre>
+
+<h3>DELETE /api/Book/{id}</h3>
+<p>Request:</p>
+<pre>
+        DELETE /api/Book/1
+    </pre>
+<p>Response:</p>
+<pre>
+        200 OK
+        "Book deleted successfully."
+    </pre>
+
+<h3>GET /api/Book/Search/{bookName}</h3>
+<p>Request:</p>
+<pre>
+        GET /api/Book/Search/Book Title
+    </pre>
+<p>Response:</p>
+<pre>
+        200 OK
+        [
+            {
+                "Id": 1,
+                "Name": "Book Title",
+                "Price": 29.99,
+                "ImageURL": "https://example.com/book-image.jpg",
+                "CreatedAt": "2023-05-18T12:00:00Z",
+                "GenreName": "Fiction",
+                "Authors": [
+                    "John Doe",
+                    "Jane Smith"
+                ]
+            },
+            {
+                "Id": 2,
+                "Name": "Book Title 2",
+                "Price": 19.99,
+                "ImageURL": "https://example.com/book-image-2.jpg",
+                "CreatedAt": "2023-05-18T13:00:00Z",
+                "GenreName": "Non-fiction",
+                "Authors": [
+                    "John Doe"
+                ]
+            }
+        ]
+    </pre>
