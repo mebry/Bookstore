@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bookstore.Application.Common.Interfaces.Services;
+using Bookstore.Application.Shared.Identity;
 using Bookstore.Domain.DisplayModels;
 using Bookstore.MvcUI.Models;
 using Bookstore.MvcUI.ViewModels.Incoming;
@@ -26,7 +27,7 @@ namespace Bookstore.MvcUI.Controllers
             _mapper = mapper;
         }
 
-        [AllowAnonymous]
+
         public async Task<IActionResult> Index()
         {
             var books = await _bookService.GetBookPreviewsAsync();
@@ -36,7 +37,6 @@ namespace Bookstore.MvcUI.Controllers
             return View(mappedBooks);
         }
 
-        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var bookDetails = await _bookService.GetBookDetailsAsync(id);
@@ -55,7 +55,7 @@ namespace Bookstore.MvcUI.Controllers
 
             return View(mappedBook);
         }
-
+        [Authorize(Roles = AvailableRoles.Admin)]
         public async Task<IActionResult> Edit(int id)
         {
             var bookForUpdate = await _bookService.GetBookWithAuthors(id);
@@ -102,6 +102,7 @@ namespace Bookstore.MvcUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AvailableRoles.Admin)]
         public async Task<IActionResult> Edit(int id, BookForUpdate bookForUpdate)
         {
             if (!ModelState.IsValid)
@@ -131,6 +132,7 @@ namespace Bookstore.MvcUI.Controllers
             return View("Success", "Book");
         }
 
+        [Authorize(Roles = AvailableRoles.Admin)]
         public async Task<IActionResult> Create()
         {
             var genres = await _genreService.GetAllAsync();
@@ -163,6 +165,7 @@ namespace Bookstore.MvcUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AvailableRoles.Admin)]
         public async Task<IActionResult> Create(BookForCreation bookForCreation)
         {
 

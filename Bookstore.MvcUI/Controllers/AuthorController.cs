@@ -6,6 +6,7 @@ using Bookstore.MvcUI.ViewModels.Incoming;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Bookstore.MvcUI.Models;
+using Bookstore.Application.Shared.Identity;
 
 namespace Bookstore.MvcUI.Controllers
 {
@@ -20,7 +21,6 @@ namespace Bookstore.MvcUI.Controllers
             _mapper = mapper;
         }
 
-        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var authors = await _authorService.GetAllAsync();
@@ -36,6 +36,7 @@ namespace Bookstore.MvcUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AvailableRoles.Admin)]
         public async Task<IActionResult> Create(AuthorForCreation author)
         {
             if (!ModelState.IsValid)
@@ -54,6 +55,8 @@ namespace Bookstore.MvcUI.Controllers
 
             return View("Success", "Author");
         }
+
+        [Authorize(Roles = AvailableRoles.Admin)]
         public async Task<IActionResult> Edit(int id)
         {
             var actorDetails = await _authorService.GetByIdAsync(id);
@@ -66,6 +69,7 @@ namespace Bookstore.MvcUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AvailableRoles.Admin)]
         public async Task<IActionResult> Edit(int id, AuthorForUpdate author)
         {
             if (!ModelState.IsValid)
@@ -86,7 +90,6 @@ namespace Bookstore.MvcUI.Controllers
             return View("Success", "Author");
         }
 
-        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var actorDetails = await _authorService.GetByIdAsync(id);
@@ -104,7 +107,7 @@ namespace Bookstore.MvcUI.Controllers
             return View(mappedAuthor);
         }
 
-
+        [Authorize(Roles = AvailableRoles.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             var actorDetails = await _authorService.GetByIdAsync(id);
@@ -120,7 +123,7 @@ namespace Bookstore.MvcUI.Controllers
             var mappedAuthor = _mapper.Map<AuthorForDisplay>(actorDetails.Data);
             return View(mappedAuthor);
         }
-
+        [Authorize(Roles = AvailableRoles.Admin)]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

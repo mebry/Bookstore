@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Bookstore.Application.Common.Interfaces.Services;
+using Bookstore.Application.Shared.Identity;
 using Bookstore.MvcUI.Models;
 using Bookstore.MvcUI.ViewModels.Outgoing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Bookstore.MvcUI.Controllers
 {
@@ -20,6 +23,7 @@ namespace Bookstore.MvcUI.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = AvailableRoles.Client)]
         public async Task<IActionResult> Index()
         {
             var result = await _orderService.GetOrdersByUserAsync(_currentUserService.UserId);
@@ -38,6 +42,7 @@ namespace Bookstore.MvcUI.Controllers
             return View(mappedDetails);
         }
 
+        [Authorize(Roles = AvailableRoles.Client)]
         public async Task<IActionResult> CreateOrder()
         {
             var result = await _orderService.CreateOrderAsync(_currentUserService.UserId);
