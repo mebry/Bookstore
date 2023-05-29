@@ -22,12 +22,6 @@ namespace Bookstore.Infrastructure.Persistance.Initializers
 
         public async Task InitialiseAsync()
         {
-            if (!_context.Authors.Any())
-            {
-
-                await _context.SaveChangesAsync();
-            }
-
             if (!_context.Books.Any() && !_context.Genres.Any() && !_context.Authors.Any())
             {
                 var comedy = new Genre
